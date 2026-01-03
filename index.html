@@ -1,49 +1,28 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>AI Translate Test</title>
-  <script src="https://js.puter.com/v2/"></script>
-</head>
-<body>
-
-<h2>AI Translate (Puter)</h2>
-
-<textarea id="inputText" rows="4" cols="50">
-Halo dunia
-</textarea><br><br>
-
-<button id="btn">Translate</button><br><br>
-
-<textarea id="outputText" rows="4" cols="50"></textarea>
+<script src="https://js.puter.com/v2/"></script>
 
 <script>
-document.getElementById("btn").onclick = async () => {
+async function translateText() {
   try {
-    console.log("Translate clicked");
+    const text = document.getElementById("inputText").value;
 
     const res = await puter.ai.chat({
       model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
-          content: "Translate this Indonesian text to English:\n" +
-            document.getElementById("inputText").value
+          content: `Translate this Indonesian text to English. Only output the translation:\n\n${text}`
         }
       ]
     });
 
-    console.log("RESULT:", res);
+    console.log("AI RESULT:", res);
 
     document.getElementById("outputText").value =
-      res?.message?.content || "TIDAK ADA OUTPUT";
+      res?.message?.content || "Tidak ada hasil";
 
-  } catch (e) {
-    console.error("ERROR:", e);
-    alert("Error, cek console");
+  } catch (err) {
+    console.error("TRANSLATE ERROR:", err);
+    alert(err.error || err.message || "Unknown error");
   }
-};
+}
 </script>
-
-</body>
-</html>
